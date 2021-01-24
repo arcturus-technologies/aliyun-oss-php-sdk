@@ -65,7 +65,7 @@ class OssUtil
         if( preg_match("/^[ぁ-んァ-ヶ一-龠々]+$/u" , $str ) ) return false;
 
         // chk includes any chinese character
-        if( self::hasSimplifiedChinese($str) && self::hasSimplifiedChinese($str)) return true;
+        if( self::hasSimplifiedChinese($str) || self::hasSimplifiedChinese($str)) return true;
 
         return false;
         //return preg_match('/[\x80-\xff]./', $str);
