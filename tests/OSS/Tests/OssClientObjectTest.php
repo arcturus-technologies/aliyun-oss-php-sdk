@@ -127,6 +127,31 @@ class OssClientObjectTest extends TestOssClientBase
             $this->assertEquals('notexist.txt file does not exist', $e->getMessage());
         }
 
+        // Chinese only
+        try {
+            $this->ossClient->uploadFile($this->bucket, $object, "圖图沈.txt", $options);
+            $this->assertFalse(true);
+        } catch (OssException $e) {
+            $this->assertEquals('圖图沈.txt file does not exist', $e->getMessage());
+        }
+
+        // Japanese only
+        try {
+            $this->ossClient->uploadFile($this->bucket, $object, "北海道沈テスト.txt", $options);
+            $this->assertFalse(true);
+        } catch (OssException $e) {
+            $this->assertEquals('北海道圖图図沈テスト.txt file does not exist', $e->getMessage());
+        }
+
+        // Mixed Chinese and Japanese
+        try {
+            $this->ossClient->uploadFile($this->bucket, $object, "北海道圖图図沈テスト.txt", $options);
+            $this->assertFalse(true);
+        } catch (OssException $e) {
+            $this->assertEquals('北海道圖图図沈テスト.txt file does not exist', $e->getMessage());
+        }
+
+
         /**
          * GetObject to the local variable and check for match
          */

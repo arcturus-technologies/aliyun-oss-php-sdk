@@ -58,7 +58,17 @@ class OssUtil
      */
     public static function chkChinese($str)
     {
-        return preg_match('/[\x80-\xff]./', $str);
+        // 1byte character delete 
+        $str =  preg_replace( "/[\x20-\x7E]+/" , "" , $str );
+
+        // chk japanese character only
+        if( preg_match("/^[ぁ-んァ-ヶ一-龠々]+$/u" , $str ) ) return false;
+
+        // chk includes any chinese character
+        if( self::hasSimplifiedChinese($str) && self::hasSimplifiedChinese($str)) return true;
+
+        return false;
+        //return preg_match('/[\x80-\xff]./', $str);
     }
 
     /**
@@ -524,6 +534,41 @@ BBB;
             return rawurldecode($key);
         } else {
             throw new OssException("Unrecognized encoding type: " . $encoding);
+        }
+    }
+
+
+    /**
+     * Check whether the string includes any simplified chinese character
+     *
+     * @param string $input
+     * @return boolean
+     */
+    function hasSimplifiedChinese(string $input)
+    {
+        $simplifiedChinese = file_get_contents( __DIR__ .'/SimplifiedChinese.txt');
+
+        if( preg_match('/(' . $simplifiedChinese . ')/u',$input )){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * Check whether the string includes any traditional chinese character
+     *
+     * @param string $input
+     * @return boolean
+     */
+    function hasTraditionalChinese(string $input)
+    {
+        $traditionalChinese = file_get_contents( __DIR__ .'/TraditionalChinese.txt');
+
+        if( preg_match('/(' . $traditionalChinese . ')/u',$input )){
+            return true;
+        }else{
+            return false;
         }
     }
 }

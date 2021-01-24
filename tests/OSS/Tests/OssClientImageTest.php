@@ -28,6 +28,50 @@ class OssClinetImageTest extends TestOssClientBase
         $this->client->uploadFile($this->bucketName, $this->object, $this->local_file);
     }
 
+    public function setUpChineseOnly()
+    {
+        parent::setUp();
+
+        $this->client = $this->ossClient;
+        $this->bucketName = $this->bucket;
+        $this->local_file = "圖图沈.jpg";
+        $this->object = "oss-example.jpg";
+        $this->download_file = "image.jpg";
+
+        Common::waitMetaSync();
+        $this->client->uploadFile($this->bucketName, $this->object, $this->local_file);
+    }
+
+    public function setUpJapaneseOnly()
+    {
+        parent::setUp();
+
+        $this->client = $this->ossClient;
+        $this->bucketName = $this->bucket;
+        $this->local_file = "北海道沈テスト.jpg";
+        $this->object = "oss-example.jpg";
+        $this->download_file = "image.jpg";
+
+        Common::waitMetaSync();
+        $this->client->uploadFile($this->bucketName, $this->object, $this->local_file);
+    }
+
+
+    public function setUpMixed()
+    {
+        parent::setUp();
+
+        $this->client = $this->ossClient;
+        $this->bucketName = $this->bucket;
+        $this->local_file = "北海道圖图図沈テスト.jpg";
+        $this->object = "oss-example.jpg";
+        $this->download_file = "image.jpg";
+
+        Common::waitMetaSync();
+        $this->client->uploadFile($this->bucketName, $this->object, $this->local_file);
+    }
+
+
     public function tearDown()
     {
         parent::tearDown();
